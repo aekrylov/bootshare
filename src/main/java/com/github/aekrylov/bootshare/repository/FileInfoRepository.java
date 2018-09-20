@@ -1,8 +1,11 @@
 package com.github.aekrylov.bootshare.repository;
 
 import com.github.aekrylov.bootshare.model.FileInfo;
+import com.github.aekrylov.bootshare.model.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -10,4 +13,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface FileInfoRepository extends CrudRepository<FileInfo, String> {
+
+    List<FileInfo> getByOwner(User owner);
 }

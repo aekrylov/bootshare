@@ -1,8 +1,7 @@
 package com.github.aekrylov.bootshare.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -11,7 +10,7 @@ import java.util.Objects;
  * Date: 9/20/18 11:31 PM
  */
 @Entity
-public class FileInfo {
+public class FileInfo implements Serializable {
 
     @Id
     private String id;
@@ -21,6 +20,9 @@ public class FileInfo {
 
     @Column(nullable = false)
     private Date expiresAt;
+
+    @ManyToOne//todo
+    private User owner;
 
 
     public String getId() {
@@ -61,4 +63,11 @@ public class FileInfo {
         return Objects.hash(getId());
     }
 
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
 }

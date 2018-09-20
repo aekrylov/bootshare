@@ -8,5 +8,5 @@ import org.springframework.data.repository.CrudRepository;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 9/21/18 12:00 AM
  */
-public interface BlobFileRepository extends CrudRepository<BlobFile, FileInfo> {
+public interface BlobFileRepository extends CrudRepository<BlobFile, String> {
 }

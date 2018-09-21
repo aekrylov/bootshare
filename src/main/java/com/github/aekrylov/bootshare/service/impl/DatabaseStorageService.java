@@ -1,10 +1,11 @@
-package com.github.aekrylov.bootshare.service;
+package com.github.aekrylov.bootshare.service.impl;
 
 import com.github.aekrylov.bootshare.model.BlobFile;
 import com.github.aekrylov.bootshare.model.FileInfo;
 import com.github.aekrylov.bootshare.model.User;
 import com.github.aekrylov.bootshare.repository.BlobFileRepository;
 import com.github.aekrylov.bootshare.repository.FileInfoRepository;
+import com.github.aekrylov.bootshare.service.StorageService;
 import org.hashids.Hashids;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class DatabaseStorageService implements StorageService {
     }
 
     @Override
-    public String upload(MultipartFile file, TemporalAmount ttl) {
+    public FileInfo upload(MultipartFile file, TemporalAmount ttl) {
         User currentUser = new User(); //todo current user
         currentUser.setId(1);
         try {
@@ -54,16 +55,11 @@ public class DatabaseStorageService implements StorageService {
             blob.setInfo(info);
             blob.setData(file.getBytes());
             blobFileRepository.save(blob);
-            return id;
+            return info;
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Unable to persist file");
         }
-    }
-
-    @Override
-    public String getFileName(String path) {
-        return getFileInfo(path).getFilename();
     }
 
     @Override
@@ -73,8 +69,8 @@ public class DatabaseStorageService implements StorageService {
     }
 
     @Override
-    public byte[] getFileAsBytes(String path) {
-        return blobFileRepository.findById(path)
+    public byte[] getFileAsBytes(String id) {
+        return blobFileRepository.findById(id)
                 .map(BlobFile::getData)
                 .orElseThrow(() -> new RuntimeException("File not found"));
     }

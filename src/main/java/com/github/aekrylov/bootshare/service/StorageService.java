@@ -13,13 +13,35 @@ import java.util.List;
  */
 public interface StorageService {
 
-    String upload(MultipartFile file, TemporalAmount ttl);
+    /**
+     * Saves a file to the database
+     *
+     * @param file file to save
+     * @param ttl  time-to-live, i.e. how soon this file will be expired
+     * @return file info
+     */
+    FileInfo upload(MultipartFile file, TemporalAmount ttl);
 
-    String getFileName(String path);
-
+    /**
+     * Returns file info (i.e. name, author etc)
+     *
+     * @param id file id
+     * @return file info object
+     */
     FileInfo getFileInfo(String id);
 
-    byte[] getFileAsBytes(String path);
+    /**
+     * Load file contents as bytes
+     *
+     * @param id file id
+     * @return file contents
+     */
+    byte[] getFileAsBytes(String id);
 
+    /**
+     * Returns all files uploaded by a given user
+     * @param user user to search for
+     * @return list of all files uploaded by the user
+     */
     List<FileInfo> getAllFiles(User user);
 }

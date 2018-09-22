@@ -17,6 +17,13 @@ public class User {
     @Column(unique = true, nullable = false)
     private String phoneNumber;
 
+    public User() {
+    }
+
+    public User(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public int getId() {
         return id;
     }

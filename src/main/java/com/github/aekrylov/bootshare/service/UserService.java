@@ -9,4 +9,6 @@ import com.github.aekrylov.bootshare.model.User;
 public interface UserService {
 
     User getByPhone(String phone);
+
+    User getByPhoneOrCreate(String phone);
 }

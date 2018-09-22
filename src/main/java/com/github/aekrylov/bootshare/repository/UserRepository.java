@@ -4,6 +4,8 @@ import com.github.aekrylov.bootshare.model.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 9/20/18 11:49 PM
@@ -11,5 +13,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends CrudRepository<User, Integer> {
 
-    User findByPhoneNumber(String phoneNumber);
+    Optional<User> findByPhoneNumber(String phoneNumber);
 }

@@ -1,6 +1,5 @@
 package com.github.aekrylov.bootshare.service.impl;
 
-import com.github.aekrylov.bootshare.model.User;
 import com.github.aekrylov.bootshare.service.OtpCodeNotFoundException;
 import com.github.aekrylov.bootshare.service.OtpService;
 import com.github.aekrylov.bootshare.service.SmsGateway;
@@ -20,7 +19,7 @@ import java.util.Random;
 @Service
 public class SmsOtpService implements OtpService {
 
-    private final Cache<User, String> codes;
+    private final Cache<String, String> codes;
 
     private final SmsGateway gateway;
     private final MessageSource messageSource;
@@ -35,26 +34,26 @@ public class SmsOtpService implements OtpService {
     }
 
     @Override
-    public void sendCode(User user) {
+    public void sendCode(String phone) {
         String code = CodeGenerator.generate(6);
-        codes.put(user, code);
-        sendCode(user.getPhoneNumber(), code);
+        codes.put(phone, code);
+        sendCode(phone, code);
     }
 
     @Override
-    public void resendCode(User user) {
-        String code = codes.getIfPresent(user);
+    public void resendCode(String phone) {
+        String code = codes.getIfPresent(phone);
         if (code == null)
             code = CodeGenerator.generate(6);
 
         //refresh ttl
-        codes.put(user, code);
-        sendCode(user.getPhoneNumber(), code);
+        codes.put(phone, code);
+        sendCode(phone, code);
     }
 
     @Override
-    public boolean codeCorrect(User user, String code) {
-        String presentCode = codes.getIfPresent(user);
+    public boolean codeCorrect(String phone, String code) {
+        String presentCode = codes.getIfPresent(phone);
         if (presentCode != null) {
             return code.equals(presentCode);
         }

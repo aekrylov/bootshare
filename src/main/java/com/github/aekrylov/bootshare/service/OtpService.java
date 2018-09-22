@@ -1,7 +1,5 @@
 package com.github.aekrylov.bootshare.service;
 
-import com.github.aekrylov.bootshare.model.User;
-
 /**
  * Service for sending and checking one time passwords
  * <p>
@@ -13,24 +11,24 @@ public interface OtpService {
     /**
      * Sends confirmation code for a user, replacing with a new one if already exists
      *
-     * @param user user
+     * @param phone phone number
      */
-    void sendCode(User user);
+    void sendCode(String phone);
 
     /**
      * Sends confirmation code for a user, does not generate a new code if one already exists
      *
-     * @param user user
+     * @param phone phone number
      */
-    void resendCode(User user);
+    void resendCode(String phone);
 
     /**
      * Check if provided otp for the user is correct
      *
-     * @param user user
+     * @param phone phone number
      * @param code otp code
      * @return true if correct
      * @throws OtpCodeNotFoundException if there's no OTP code for the user
      */
-    boolean codeCorrect(User user, String code);
+    boolean codeCorrect(String phone, String code);
 }

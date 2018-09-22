@@ -32,6 +32,13 @@ public interface StorageService {
     FileInfo getFileInfo(String id);
 
     /**
+     * Delete file
+     *
+     * @param id file id
+     */
+    void delete(String id);
+
+    /**
      * Load file contents as bytes
      *
      * @param id file id

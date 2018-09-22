@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.TemporalAmount;
 import java.util.Date;
@@ -72,6 +71,11 @@ public class DatabaseStorageService implements StorageService {
     }
 
     @Override
+    public void delete(String id) {
+        blobFileRepository.deleteById(id);
+    }
+
+    @Override
     public byte[] getFileAsBytes(String id) {
         return blobFileRepository.findById(id)
                 .map(BlobFile::getData)
@@ -91,7 +95,7 @@ public class DatabaseStorageService implements StorageService {
     private String generateFileId(User owner, MultipartFile file) {
         return hashids.encode(
                 owner.getId(),
-                Instant.now().minus(Duration.ofDays(365 * 42)).toEpochMilli()
+                fileInfoRepository.count()
         ); //todo better generation algorithm
     }
 }

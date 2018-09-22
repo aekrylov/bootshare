@@ -26,10 +26,38 @@
                 integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
                 crossorigin="anonymous"></script>
 
+        <link rel="stylesheet" href="/static/css/custom.css">
+
         <@head_extra></@head_extra>
     </head>
 
     <body>
+        <#if current_user??>
+            <div class="container-fluid">
+                <header class="navbar navbar-expand navbar-light bg-light">
+                    <a class="navbar-brand" href="/">BootShare</a>
+
+                    <div class="collapse navbar-collapse">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/upload">Upload</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/cabinet">My files</a>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <span class="navbar-text">${current_user.phoneNumber}</span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-outline-secondary mx-2" href="/logout">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </header>
+            </div>
+        </#if>
     <div class="container">
             <@body></@body>
     </div>

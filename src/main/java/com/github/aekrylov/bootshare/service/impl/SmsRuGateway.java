@@ -23,7 +23,7 @@ import java.util.Map;
 @Component
 public class SmsRuGateway implements SmsGateway {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SmsRuGateway.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger("sms-gateway");
     private static final String BASE_URL = "https://sms.ru/sms/";
 
     static {
@@ -41,8 +41,7 @@ public class SmsRuGateway implements SmsGateway {
 
     @Override
     public void sendSms(String to, String text) {
-        //todo
-        LOGGER.warn("Sms to {}: {}", to, text);
+        LOGGER.debug("Sending to {}: {}", to, text);
 
         Map<String, Object> params = new HashMap<>();
         params.put("to", to.replace("+", ""));

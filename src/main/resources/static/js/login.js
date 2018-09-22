@@ -21,24 +21,16 @@ $(function() {
         var number = $('#phoneNumber').val();
 
         btn.text('Sending...');
-        $.post('/auth/request_code', {phone: number})
-            .done(function(data) {
+        requestCode(number, $('#requestCode'))
+            .done(function() {
                 $('#phoneNumber').attr('readonly', true);
 
                 btn.removeAttr('disabled');
                 btn.removeAttr('data-hasnext');
                 btn.text('Sign in');
+
                 $('#nextStepForm').show();
-
-                $('#codeHelp').text('Code was sent successfully to ' + number);
-
-                //disable resend code button
-                //todo count down
-                $('#requestCode').attr('disabled', true);
-                setTimeout(function() {
-                    $('#requestCode').removeAttr('disabled');
-                    $('#requestCode').text('Resend code');
-                }, 60000)
+                $('#code').focus();
             })
             .fail(function() {
                 btn.removeAttr('disabled');
@@ -52,20 +44,25 @@ $(function() {
 
         var number = $('#phoneNumber').val();
 
-        el.text('Sending...');
-        $.post('/auth/request_code', {phone: number})
-            .done(function(data) {
-                $('#codeHelp').text('Code was sent successfully to ' + number);
-                el.text('Code sent!');
-                setTimeout(function() {
-                    //todo tooltip
-                    el.removeAttr('disabled');
-                    el.text('Resend code');
-                }, 60000)
-            })
-            .fail(function() {
-                el.removeAttr('disabled');
-                //todo more verbose
-            });
+        requestCode(number, el);
     });
 });
+
+function requestCode(phone, button) {
+    button.attr('disabled', true);
+    button.text('Sending...');
+    return $.post('/auth/request_code', {phone: phone})
+        .done(function(data) {
+            $('#codeHelp').text('A confirmation code was sent to ' + phone);
+            button.text('Code sent!');
+            setTimeout(function() {
+                //todo tooltip
+                button.removeAttr('disabled');
+                button.text('Resend code');
+            }, 60000)
+        })
+        .fail(function() {
+            button.removeAttr('disabled');
+            //todo more verbose
+        })
+}

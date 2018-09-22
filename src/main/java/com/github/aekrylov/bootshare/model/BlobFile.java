@@ -14,7 +14,7 @@ public class BlobFile {
     private String fileId;
 
     @MapsId
-    @OneToOne(optional = false, cascade = CascadeType.REMOVE)
+    @OneToOne(optional = false, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private FileInfo info;
 
     @Lob

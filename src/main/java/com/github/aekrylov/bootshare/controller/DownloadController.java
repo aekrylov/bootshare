@@ -20,7 +20,7 @@ import java.io.IOException;
  * Date: 9/21/18 1:07 AM
  */
 @Controller
-@RequestMapping(path = "/d")
+@RequestMapping(path = "/f")
 public class DownloadController {
 
     private final StorageService storageService;

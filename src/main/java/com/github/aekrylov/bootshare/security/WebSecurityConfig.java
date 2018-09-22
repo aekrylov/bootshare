@@ -20,16 +20,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/d/**", "/login", "/auth/**").permitAll()
-                .antMatchers("/static/**").permitAll()
-                .anyRequest().authenticated()
+                    .antMatchers("/f/**", "/login", "/auth/**").permitAll()
+                    .antMatchers("/static/**").permitAll()
+                    .anyRequest().authenticated()
                     .and()
                 .csrf().disable() //todo
                 .formLogin()
-                .loginPage("/login")
-                .loginProcessingUrl("/auth/login")
-                .usernameParameter("phone")
-                .passwordParameter("code");
+                    .loginPage("/login")
+                    .loginProcessingUrl("/auth/login")
+                    .usernameParameter("phone")
+                    .passwordParameter("code");
     }
 
     @Override

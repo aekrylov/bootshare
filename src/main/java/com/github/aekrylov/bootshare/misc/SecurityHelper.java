@@ -10,6 +10,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class SecurityHelper {
 
     public static User getCurrentUser() {
+        if (SecurityContextHolder.getContext().getAuthentication() == null
+                || !(SecurityContextHolder.getContext().getAuthentication().getDetails() instanceof User)) {
+            return null;
+        }
+
         return (User) SecurityContextHolder.getContext().getAuthentication().getDetails();
     }
 }

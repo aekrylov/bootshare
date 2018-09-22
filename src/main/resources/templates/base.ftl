@@ -33,7 +33,7 @@
 
     <body>
         <#if current_user??>
-            <div class="container-fluid">
+            <div class="container-fluid mb-2">
                 <header class="navbar navbar-expand navbar-light bg-light">
                     <a class="navbar-brand" href="/">BootShare</a>
 

@@ -28,6 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                     .loginPage("/login")
                     .loginProcessingUrl("/auth/login")
+                    .defaultSuccessUrl("/")
                     .usernameParameter("phone")
                     .passwordParameter("code");
     }

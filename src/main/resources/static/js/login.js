@@ -5,11 +5,16 @@
 
 $(function() {
 
-    $('#submitBtn').click(function(e) {
+    $('#loginForm').submit(function(e) {
+        //validate form
+        $(this).addClass('was-validated');
+        if(this.checkValidity() === false) {
+            e.preventDefault();
+            e.stopPropagation();
+            return;
+        }
 
-        //todo validate
-        var btn = $(this);
-
+        var btn = $('#submitBtn', this);
         if(!btn.attr('data-hasnext')) {
             return;
         }
@@ -30,6 +35,7 @@ $(function() {
                 btn.text('Sign in');
 
                 $('#nextStepForm').show();
+                $('#nextStepForm input').removeAttr('disabled');
                 $('#code').focus();
             })
             .fail(function() {
@@ -55,14 +61,19 @@ function requestCode(phone, button) {
         .done(function(data) {
             $('#codeHelp').text('A confirmation code was sent to ' + phone);
             button.text('Code sent!');
-            setTimeout(function() {
-                //todo tooltip
-                button.removeAttr('disabled');
-                button.text('Resend code');
-            }, 60000)
+
+            var finalDate = Date.now() + 60000;
+            button.countdown(finalDate)
+                .on('update.countdown', function(e) {
+                    $(this).text('Resend in '+e.offset.seconds+'...');
+                })
+                .on('finish.countdown', function(e) {
+                    $(this).removeAttr('disabled');
+                    $(this).text('Resend code');
+                });
         })
         .fail(function() {
             button.removeAttr('disabled');
-            //todo more verbose
+            $('#codeHelp').text('Error while sending confirmation code, try again');
         })
 }

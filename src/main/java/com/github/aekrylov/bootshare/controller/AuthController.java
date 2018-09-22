@@ -4,6 +4,7 @@ import com.github.aekrylov.bootshare.service.OtpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,7 +24,8 @@ public class AuthController {
     }
 
     @GetMapping(path = {"/login", "/auth/login"})
-    public String loginForm() {
+    public String loginForm(@RequestParam(value = "error", required = false) String error, ModelMap modelMap) {
+        modelMap.put("auth_failed", error != null);
         return "login";
     }
 

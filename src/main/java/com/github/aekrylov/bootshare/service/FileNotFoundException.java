@@ -1,9 +1,13 @@
 package com.github.aekrylov.bootshare.service;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 9/21/18 10:25 PM
  */
+@ResponseStatus(HttpStatus.NOT_FOUND)
 public class FileNotFoundException extends RuntimeException {
 
     private final String filename;

@@ -1,16 +1,19 @@
 package com.github.aekrylov.bootshare.service.impl;
 
+import com.github.aekrylov.bootshare.misc.SecurityHelper;
 import com.github.aekrylov.bootshare.model.BlobFile;
 import com.github.aekrylov.bootshare.model.FileInfo;
 import com.github.aekrylov.bootshare.model.User;
 import com.github.aekrylov.bootshare.repository.BlobFileRepository;
 import com.github.aekrylov.bootshare.repository.FileInfoRepository;
+import com.github.aekrylov.bootshare.service.FileNotFoundException;
 import com.github.aekrylov.bootshare.service.StorageService;
 import org.hashids.Hashids;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
@@ -38,15 +41,15 @@ public class DatabaseStorageService implements StorageService {
     }
 
     @Override
+    @Transactional
     public FileInfo upload(MultipartFile file, TemporalAmount ttl) {
-        User currentUser = new User(); //todo current user
-        currentUser.setId(1);
+        User currentUser = SecurityHelper.getCurrentUser();
         try {
             FileInfo info = new FileInfo();
-            String id = hashids.encode(currentUser.getId(), Instant.now().minus(Duration.ofDays(365*42)).toEpochMilli()); //todo better generation algorithm
+            String id = generateFileId(currentUser, file);
             info.setId(id);
-            
-            //info.setOwner(currentUser); //todo current user
+
+            info.setOwner(currentUser);
             info.setFilename(file.getOriginalFilename());
             info.setExpiresAt(Date.from(Instant.now().plus(ttl)));
             info = fileInfoRepository.save(info);
@@ -65,14 +68,14 @@ public class DatabaseStorageService implements StorageService {
     @Override
     public FileInfo getFileInfo(String id) {
         return findFile(id)
-                .orElseThrow(() -> new RuntimeException("File not found"));
+                .orElseThrow(() -> new FileNotFoundException(id));
     }
 
     @Override
     public byte[] getFileAsBytes(String id) {
         return blobFileRepository.findById(id)
                 .map(BlobFile::getData)
-                .orElseThrow(() -> new RuntimeException("File not found"));
+                .orElseThrow(() -> new FileNotFoundException(id));
     }
 
     @Override
@@ -82,6 +85,13 @@ public class DatabaseStorageService implements StorageService {
 
     private Optional<FileInfo> findFile(String id) {
         return fileInfoRepository.findById(id)
-                .filter(file -> file.getExpiresAt().after(new Date())); //todo cleanup expired files here?
+                .filter(file -> file.getExpiresAt().after(new Date()));
+    }
+
+    private String generateFileId(User owner, MultipartFile file) {
+        return hashids.encode(
+                owner.getId(),
+                Instant.now().minus(Duration.ofDays(365 * 42)).toEpochMilli()
+        ); //todo better generation algorithm
     }
 }

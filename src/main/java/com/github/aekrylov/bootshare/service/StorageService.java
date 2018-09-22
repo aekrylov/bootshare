@@ -27,6 +27,7 @@ public interface StorageService {
      *
      * @param id file id
      * @return file info object
+     * @throws FileNotFoundException if the file is not found
      */
     FileInfo getFileInfo(String id);
 
@@ -35,6 +36,7 @@ public interface StorageService {
      *
      * @param id file id
      * @return file contents
+     * @throws FileNotFoundException if the file is not found
      */
     byte[] getFileAsBytes(String id);
 

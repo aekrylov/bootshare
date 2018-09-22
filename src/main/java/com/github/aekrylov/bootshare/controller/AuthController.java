@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- * TODO
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 9/20/18 11:30 PM
  */

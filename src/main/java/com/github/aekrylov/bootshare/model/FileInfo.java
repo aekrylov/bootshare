@@ -1,6 +1,9 @@
 package com.github.aekrylov.bootshare.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -21,7 +24,7 @@ public class FileInfo implements Serializable {
     @Column(nullable = false)
     private Date expiresAt;
 
-    @ManyToOne//todo
+    @ManyToOne(optional = false)
     private User owner;
 
 

@@ -1,11 +1,10 @@
 package com.github.aekrylov.bootshare.controller;
 
-import com.github.aekrylov.bootshare.model.User;
 import com.github.aekrylov.bootshare.service.OtpService;
 import com.github.aekrylov.bootshare.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,21 +31,10 @@ public class AuthController {
         return "login";
     }
 
-    @PostMapping(path = "/login")
-    public String doLogin(@RequestParam("phone") String phone,
-                          @RequestParam(value = "request_code", required = false) boolean requestCode,
-                          @RequestParam(value = "code", required = false) String code,
-                          ModelMap modelMap) {
-        User user = new User(); //todo
-        user.setPhoneNumber(phone);
-
-        if (requestCode) {
-            otpService.sendCode(user);
-            modelMap.put("message", "Code sent");
-            return "redirect:/login";
-        }
-
-        modelMap.put("message", otpService.codeCorrect(user, code) ? "Code correct" : "COde incorrect");
-        return "/login";
+    @PostMapping(path = "/request_code")
+    public ResponseEntity<?> requestCode(@RequestParam("phone") String phone) {
+        otpService.sendCode(phone);
+        return ResponseEntity.ok().build();
     }
+
 }

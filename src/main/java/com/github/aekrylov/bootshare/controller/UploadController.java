@@ -1,5 +1,6 @@
 package com.github.aekrylov.bootshare.controller;
 
+import com.github.aekrylov.bootshare.model.FileInfo;
 import com.github.aekrylov.bootshare.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,8 +30,8 @@ public class UploadController {
     @PostMapping
     public String upload(@RequestParam("file") MultipartFile file,
                          @RequestParam("ttl") int ttlDays) {
-        String id = storageService.upload(file, Duration.ofDays(ttlDays));
-        return "redirect:/get/"+id;
+        FileInfo info = storageService.upload(file, Duration.ofDays(ttlDays));
+        return "redirect:/d/" + info.getId();
     }
 
     @GetMapping

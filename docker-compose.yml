@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+  web:
+    build:
+      context: .
+      args:
+        - JAR_FILE=bootshare-0.1-SNAPSHOT.jar
+    volumes:
+    - ./data:/var/lib/bootshare
+    ports:
+    - "8081:80"
+    depends_on:
+    - db
+    environment:
+    - DB_URL=jdbc:postgresql://db/postgres
+    - DB_USERNAME=postgres
+    - DB_PASSWORD=postgres
+    - spring.profiles.active=docker,dev

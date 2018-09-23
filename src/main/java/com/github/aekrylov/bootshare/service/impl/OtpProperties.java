@@ -15,7 +15,7 @@ public class OtpProperties {
 
     private Duration codeTtl;
 
-    private boolean testMode;
+    private boolean testMode = false;
 
     private final SmsRu smsRu = new SmsRu();
 

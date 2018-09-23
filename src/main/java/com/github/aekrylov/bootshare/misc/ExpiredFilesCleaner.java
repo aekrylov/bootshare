@@ -1,6 +1,6 @@
 package com.github.aekrylov.bootshare.misc;
 
-import com.github.aekrylov.bootshare.model.BlobFile;
+import com.github.aekrylov.bootshare.model.FileBlob;
 import com.github.aekrylov.bootshare.repository.BlobFileRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ public class ExpiredFilesCleaner {
     @Scheduled(fixedRate = 3600 * 1000, initialDelay = 1000)
     public void cleanUp() {
         LOGGER.info("Cleaning up expired files...");
-        List<BlobFile> expired = blobFileRepository.findAllExpired();
+        List<FileBlob> expired = blobFileRepository.findAllExpired();
         blobFileRepository.deleteAll(expired);
         LOGGER.info("Successfully cleaned up {} files", expired.size());
     }

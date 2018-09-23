@@ -1,9 +1,6 @@
 package com.github.aekrylov.bootshare.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -13,6 +10,7 @@ import java.util.Objects;
  * Date: 9/20/18 11:31 PM
  */
 @Entity
+@Table(name = "file_info")
 public class FileInfo implements Serializable {
 
     @Id

@@ -1,6 +1,6 @@
 package com.github.aekrylov.bootshare.repository;
 
-import com.github.aekrylov.bootshare.model.BlobFile;
+import com.github.aekrylov.bootshare.model.FileBlob;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -12,8 +12,8 @@ import java.util.List;
  * Date: 9/21/18 12:00 AM
  */
 @Repository
-public interface BlobFileRepository extends CrudRepository<BlobFile, String> {
+public interface BlobFileRepository extends CrudRepository<FileBlob, String> {
 
-    @Query("select b from BlobFile b where b.info.expiresAt < current_timestamp()")
-    List<BlobFile> findAllExpired();
+    @Query("select b from FileBlob b where b.info.expiresAt < current_timestamp()")
+    List<FileBlob> findAllExpired();
 }

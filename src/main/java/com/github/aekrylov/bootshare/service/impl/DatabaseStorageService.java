@@ -1,7 +1,7 @@
 package com.github.aekrylov.bootshare.service.impl;
 
 import com.github.aekrylov.bootshare.misc.SecurityHelper;
-import com.github.aekrylov.bootshare.model.BlobFile;
+import com.github.aekrylov.bootshare.model.FileBlob;
 import com.github.aekrylov.bootshare.model.FileInfo;
 import com.github.aekrylov.bootshare.model.User;
 import com.github.aekrylov.bootshare.repository.BlobFileRepository;
@@ -53,7 +53,7 @@ public class DatabaseStorageService implements StorageService {
             info.setExpiresAt(Date.from(Instant.now().plus(ttl)));
             info = fileInfoRepository.save(info);
 
-            BlobFile blob = new BlobFile();
+            FileBlob blob = new FileBlob();
             blob.setInfo(info);
             blob.setData(file.getBytes());
             blobFileRepository.save(blob);
@@ -78,7 +78,7 @@ public class DatabaseStorageService implements StorageService {
     @Override
     public byte[] getFileAsBytes(String id) {
         return blobFileRepository.findById(id)
-                .map(BlobFile::getData)
+                .map(FileBlob::getData)
                 .orElseThrow(() -> new FileNotFoundException(id));
     }
 

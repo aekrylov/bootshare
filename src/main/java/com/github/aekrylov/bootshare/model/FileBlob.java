@@ -8,7 +8,7 @@ import java.util.Objects;
  * Date: 9/20/18 11:45 PM
  */
 @Entity
-public class BlobFile {
+public class FileBlob {
 
     @Id
     private String fileId;
@@ -40,9 +40,9 @@ public class BlobFile {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof BlobFile)) return false;
-        BlobFile blobFile = (BlobFile) o;
-        return Objects.equals(getInfo(), blobFile.getInfo());
+        if (!(o instanceof FileBlob)) return false;
+        FileBlob fileBlob = (FileBlob) o;
+        return Objects.equals(getInfo(), fileBlob.getInfo());
     }
 
     @Override

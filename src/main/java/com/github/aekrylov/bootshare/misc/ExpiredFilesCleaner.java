@@ -27,7 +27,7 @@ public class ExpiredFilesCleaner {
         this.fileInfoRepository = fileInfoRepository;
     }
 
-    @Scheduled(fixedRate = 5 * 1000, initialDelay = 1000)
+    @Scheduled(fixedRate = 3600 * 1000, initialDelay = 1000)
     public void cleanUp() {
         LOGGER.info("Cleaning up expired files...");
         List<FileInfo> expired = fileInfoRepository.findAllExpired();

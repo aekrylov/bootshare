@@ -68,6 +68,7 @@ public class FileSystemStorageBackend implements StorageBackend {
     public void delete(String id) {
         try {
             Files.delete(getPath(id));
+            repository.deleteById(id);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

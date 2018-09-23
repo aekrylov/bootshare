@@ -69,6 +69,7 @@ public class DatabaseStorageService implements StorageService {
 
     @Override
     public void delete(String id) {
+        storageBackend.delete(id);
         fileInfoRepository.deleteById(id);
     }
 

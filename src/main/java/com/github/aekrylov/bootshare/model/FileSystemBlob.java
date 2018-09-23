@@ -13,7 +13,7 @@ public class FileSystemBlob {
     private String fileId;
 
     @MapsId
-    @OneToOne(cascade = CascadeType.REMOVE, optional = false)
+    @OneToOne(optional = false)
     private FileInfo file;
 
     @Column(nullable = false, unique = true)

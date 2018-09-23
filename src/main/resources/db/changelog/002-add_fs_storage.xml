@@ -17,4 +17,12 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="002" author="krylov">
+        <dropForeignKeyConstraint baseTableName="file_system_blob" constraintName="fk_fs_file"/>
+        <addForeignKeyConstraint baseTableName="file_system_blob" baseColumnNames="file_id" constraintName="fk_fs_file"
+                                 referencedTableName="file_info"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+
 </databaseChangeLog>

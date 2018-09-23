@@ -32,20 +32,20 @@
     </head>
 
     <body>
-        <#if current_user??>
-            <div class="container-fluid mb-2">
-                <header class="navbar navbar-expand navbar-light bg-light">
-                    <a class="navbar-brand" href="/">BootShare</a>
+        <div class="container-fluid mb-2">
+            <header class="navbar navbar-expand navbar-light bg-light">
+                <a class="navbar-brand" href="/">BootShare</a>
 
-                    <div class="collapse navbar-collapse">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/upload">Upload</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/cabinet">My files</a>
-                            </li>
-                        </ul>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/upload">Upload</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/cabinet">My files</a>
+                        </li>
+                    </ul>
+                    <#if current_user??>
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item">
                                 <span class="navbar-text">${current_user.phoneNumber}</span>
@@ -54,13 +54,13 @@
                                 <a class="btn btn-outline-secondary mx-2" href="/logout">Logout</a>
                             </li>
                         </ul>
-                    </div>
-                </header>
-            </div>
-        </#if>
-    <div class="container">
-            <@body></@body>
-    </div>
+                    </#if>
+                </div>
+            </header>
+        </div>
+        <div class="container">
+                <@body></@body>
+        </div>
     </body>
     </html>
 </#macro>

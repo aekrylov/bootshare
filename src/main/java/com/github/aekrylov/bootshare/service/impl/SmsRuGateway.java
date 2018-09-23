@@ -48,8 +48,7 @@ public class SmsRuGateway implements SmsGateway {
         params.put("msg", text);
 
         try {
-            SmsRuResponse response = request("send", params).getBody();
-            System.out.println(response.status);
+            request("send", params).getBody(); //todo handle responses
         } catch (UnirestException e) {
             throw new RuntimeException(e); //todo
         }

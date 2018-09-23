@@ -28,7 +28,7 @@ public class UploadController {
     @PostMapping
     public String upload(@RequestParam("file") MultipartFile file,
                          @RequestParam("ttl") int ttlDays) {
-        storageService.upload(file, Duration.ofDays(ttlDays));
+        storageService.upload(file, Duration.ofSeconds(ttlDays));
         return "redirect:/cabinet";
     }
 

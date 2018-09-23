@@ -1,7 +1,7 @@
 package com.github.aekrylov.bootshare.misc;
 
-import com.github.aekrylov.bootshare.model.FileBlob;
-import com.github.aekrylov.bootshare.repository.BlobFileRepository;
+import com.github.aekrylov.bootshare.model.FileInfo;
+import com.github.aekrylov.bootshare.repository.FileInfoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,18 +20,18 @@ public class ExpiredFilesCleaner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    private final BlobFileRepository blobFileRepository;
+    private final FileInfoRepository fileInfoRepository;
 
     @Autowired
-    public ExpiredFilesCleaner(BlobFileRepository blobFileRepository) {
-        this.blobFileRepository = blobFileRepository;
+    public ExpiredFilesCleaner(FileInfoRepository fileInfoRepository) {
+        this.fileInfoRepository = fileInfoRepository;
     }
 
-    @Scheduled(fixedRate = 3600 * 1000, initialDelay = 1000)
+    @Scheduled(fixedRate = 5 * 1000, initialDelay = 1000)
     public void cleanUp() {
         LOGGER.info("Cleaning up expired files...");
-        List<FileBlob> expired = blobFileRepository.findAllExpired();
-        blobFileRepository.deleteAll(expired);
+        List<FileInfo> expired = fileInfoRepository.findAllExpired();
+        fileInfoRepository.deleteAll(expired);
         LOGGER.info("Successfully cleaned up {} files", expired.size());
     }
 }

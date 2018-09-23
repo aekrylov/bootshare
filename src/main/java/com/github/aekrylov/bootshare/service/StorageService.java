@@ -4,6 +4,7 @@ import com.github.aekrylov.bootshare.model.FileInfo;
 import com.github.aekrylov.bootshare.model.User;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
 import java.time.temporal.TemporalAmount;
 import java.util.List;
 
@@ -39,13 +40,12 @@ public interface StorageService {
     void delete(String id);
 
     /**
-     * Load file contents as bytes
-     *
+     * Loads file contents as input stream
      * @param id file id
-     * @return file contents
-     * @throws FileNotFoundException if the file is not found
+     * @return input stream with file contents
+     * @throws FileNotFoundException if no file with such id exists
      */
-    byte[] getFileAsBytes(String id);
+    InputStream getFileAsStream(String id);
 
     /**
      * Returns all files uploaded by a given user

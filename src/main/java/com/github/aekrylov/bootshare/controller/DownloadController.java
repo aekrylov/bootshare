@@ -3,14 +3,17 @@ package com.github.aekrylov.bootshare.controller;
 import com.github.aekrylov.bootshare.model.FileInfo;
 import com.github.aekrylov.bootshare.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -35,10 +38,20 @@ public class DownloadController {
     }
 
     @GetMapping(path = "/{id}/download")
-    public void download(@PathVariable String id, HttpServletResponse response) throws IOException {
+    public ResponseEntity<?> download(@PathVariable String id) {
         FileInfo info = storageService.getFileInfo(id);
-        response.addHeader("Content-Disposition", "attachment; filename="+info.getFilename());
-        response.getOutputStream().write(storageService.getFileAsBytes(id));
-        response.getOutputStream().flush();
+
+        InputStreamResource data = new InputStreamResource(storageService.getFileAsStream(id));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDisposition(
+                ContentDisposition.builder("attachment")
+                .filename(info.getFilename(), StandardCharsets.UTF_8)
+                .build()
+        );
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(data);
     }
 }

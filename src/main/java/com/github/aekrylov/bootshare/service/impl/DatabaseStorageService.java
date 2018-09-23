@@ -1,11 +1,10 @@
 package com.github.aekrylov.bootshare.service.impl;
 
 import com.github.aekrylov.bootshare.misc.SecurityHelper;
-import com.github.aekrylov.bootshare.model.FileBlob;
 import com.github.aekrylov.bootshare.model.FileInfo;
 import com.github.aekrylov.bootshare.model.User;
-import com.github.aekrylov.bootshare.repository.BlobFileRepository;
 import com.github.aekrylov.bootshare.repository.FileInfoRepository;
+import com.github.aekrylov.bootshare.repository.RawFileBlobRepository;
 import com.github.aekrylov.bootshare.service.FileNotFoundException;
 import com.github.aekrylov.bootshare.service.StorageService;
 import org.hashids.Hashids;
@@ -13,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.Instant;
 import java.time.temporal.TemporalAmount;
 import java.util.Date;
@@ -29,13 +30,15 @@ import java.util.Optional;
 public class DatabaseStorageService implements StorageService {
 
     private final FileInfoRepository fileInfoRepository;
-    private final BlobFileRepository blobFileRepository;
+    private final RawFileBlobRepository rawFileBlobRepository;
+    private final EntityManager em;
     private final Hashids hashids;
 
     @Autowired
-    public DatabaseStorageService(FileInfoRepository fileInfoRepository, BlobFileRepository blobFileRepository, Hashids hashids) {
+    public DatabaseStorageService(FileInfoRepository fileInfoRepository, RawFileBlobRepository rawFileBlobRepository, EntityManager em, Hashids hashids) {
         this.fileInfoRepository = fileInfoRepository;
-        this.blobFileRepository = blobFileRepository;
+        this.rawFileBlobRepository = rawFileBlobRepository;
+        this.em = em;
         this.hashids = hashids;
     }
 
@@ -53,10 +56,9 @@ public class DatabaseStorageService implements StorageService {
             info.setExpiresAt(Date.from(Instant.now().plus(ttl)));
             info = fileInfoRepository.save(info);
 
-            FileBlob blob = new FileBlob();
-            blob.setInfo(info);
-            blob.setData(file.getBytes());
-            blobFileRepository.save(blob);
+            //flush JPA managed entities so that we can reference them in raw SQL
+            em.flush();
+            rawFileBlobRepository.insert(info.getId(), file.getInputStream());
             return info;
         } catch (IOException e) {
             e.printStackTrace();
@@ -72,14 +74,12 @@ public class DatabaseStorageService implements StorageService {
 
     @Override
     public void delete(String id) {
-        blobFileRepository.deleteById(id);
+        fileInfoRepository.deleteById(id);
     }
 
     @Override
-    public byte[] getFileAsBytes(String id) {
-        return blobFileRepository.findById(id)
-                .map(FileBlob::getData)
-                .orElseThrow(() -> new FileNotFoundException(id));
+    public InputStream getFileAsStream(String id) {
+        return rawFileBlobRepository.findById(id);
     }
 
     @Override

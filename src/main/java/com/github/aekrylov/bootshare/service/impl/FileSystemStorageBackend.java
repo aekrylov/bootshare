@@ -32,6 +32,9 @@ public class FileSystemStorageBackend implements StorageBackend {
     @Autowired
     public FileSystemStorageBackend(StorageProperties storageProperties, FilePathRepository repository) {
         this.basePath = storageProperties.getFs().getBasePath();
+        if(!this.basePath.isAbsolute()) {
+            throw new IllegalArgumentException("Base path for FS file system backend must be absolute");
+        }
         this.repository = repository;
     }
 
@@ -44,9 +47,9 @@ public class FileSystemStorageBackend implements StorageBackend {
 
         Path absolutePath = basePath.resolve(relativePath);
         Files.createDirectories(absolutePath.getParent());
-        Files.copy(file.getInputStream(), absolutePath);
+        file.transferTo(absolutePath.toFile());
 
-        //info is stored after the file is successfully persisted
+        //info is stored only after the file is successfully persisted
         repository.save(blob);
     }
 

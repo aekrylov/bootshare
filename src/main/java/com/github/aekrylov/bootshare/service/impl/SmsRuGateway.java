@@ -7,6 +7,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.request.body.MultipartBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,12 +79,14 @@ public class SmsRuGateway implements SmsGateway {
     }
 
     private HttpResponse<SmsRuResponse> request(String method, Map<String, Object> params) throws UnirestException {
-        return Unirest.post(BASE_URL + method)
+        MultipartBody body = Unirest.post(BASE_URL + method)
                 .fields(params)
                 .field("api_id", clientId)
-                .field("json", 1)
-                .field("test", testMode)
-                .asObject(SmsRuResponse.class);
+                .field("json", 1);
+        if(testMode) {
+            body.field("test", testMode);
+        }
+        return body.asObject(SmsRuResponse.class);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)

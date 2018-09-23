@@ -16,6 +16,6 @@ public class BootshareApplication {
 
 	@Bean
 	public Hashids hashids() {
-	    return new Hashids("q7cebo3nc2");
+	    return new Hashids("q7cebo3nc2", 3, "abcdefghijklmnopqrstuvwxyz1234567890");
     }
 }

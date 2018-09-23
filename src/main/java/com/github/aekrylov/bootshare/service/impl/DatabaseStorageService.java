@@ -4,15 +4,13 @@ import com.github.aekrylov.bootshare.misc.SecurityHelper;
 import com.github.aekrylov.bootshare.model.FileInfo;
 import com.github.aekrylov.bootshare.model.User;
 import com.github.aekrylov.bootshare.repository.FileInfoRepository;
-import com.github.aekrylov.bootshare.repository.RawFileBlobRepository;
 import com.github.aekrylov.bootshare.service.FileNotFoundException;
+import com.github.aekrylov.bootshare.service.StorageBackend;
 import com.github.aekrylov.bootshare.service.StorageService;
-import org.hashids.Hashids;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,16 +28,14 @@ import java.util.Optional;
 public class DatabaseStorageService implements StorageService {
 
     private final FileInfoRepository fileInfoRepository;
-    private final RawFileBlobRepository rawFileBlobRepository;
-    private final EntityManager em;
-    private final Hashids hashids;
+    private final FileIdGenerator fileIdGenerator;
+    private final StorageBackend storageBackend;
 
     @Autowired
-    public DatabaseStorageService(FileInfoRepository fileInfoRepository, RawFileBlobRepository rawFileBlobRepository, EntityManager em, Hashids hashids) {
+    public DatabaseStorageService(FileInfoRepository fileInfoRepository, FileIdGenerator fileIdGenerator, StorageBackend storageBackend) {
         this.fileInfoRepository = fileInfoRepository;
-        this.rawFileBlobRepository = rawFileBlobRepository;
-        this.em = em;
-        this.hashids = hashids;
+        this.fileIdGenerator = fileIdGenerator;
+        this.storageBackend = storageBackend;
     }
 
     @Override
@@ -48,7 +44,7 @@ public class DatabaseStorageService implements StorageService {
         User currentUser = SecurityHelper.getCurrentUser();
         try {
             FileInfo info = new FileInfo();
-            String id = generateFileId(currentUser, file);
+            String id = fileIdGenerator.generate(currentUser, file);
             info.setId(id);
 
             info.setOwner(currentUser);
@@ -56,9 +52,7 @@ public class DatabaseStorageService implements StorageService {
             info.setExpiresAt(Date.from(Instant.now().plus(ttl)));
             info = fileInfoRepository.save(info);
 
-            //flush JPA managed entities so that we can reference them in raw SQL
-            em.flush();
-            rawFileBlobRepository.insert(info.getId(), file.getInputStream());
+            storageBackend.insert(info, file);
             return info;
         } catch (IOException e) {
             e.printStackTrace();
@@ -79,7 +73,7 @@ public class DatabaseStorageService implements StorageService {
 
     @Override
     public InputStream getFileAsStream(String id) {
-        return rawFileBlobRepository.findById(id);
+        return storageBackend.getAsStream(id);
     }
 
     @Override
@@ -92,10 +86,4 @@ public class DatabaseStorageService implements StorageService {
                 .filter(file -> file.getExpiresAt().after(new Date()));
     }
 
-    private String generateFileId(User owner, MultipartFile file) {
-        return hashids.encode(
-                owner.getId(),
-                fileInfoRepository.count()
-        ); //todo better generation algorithm
-    }
 }

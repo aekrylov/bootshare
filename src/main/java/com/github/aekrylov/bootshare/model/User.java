@@ -8,7 +8,7 @@ import java.util.Objects;
  * Date: 9/20/18 11:03 PM
  */
 @Entity
-@Table(name = "user")
+@Table(name = "\"user\"")
 public class User {
 
     @Id

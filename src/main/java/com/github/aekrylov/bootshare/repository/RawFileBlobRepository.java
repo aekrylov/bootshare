@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,12 +27,14 @@ public class RawFileBlobRepository {
         this.em = em;
     }
 
+    @Transactional
     public void insert(String fileId, InputStream contents) {
+        em.flush();
         //obtain a connection through Hibernate to get inside current transaction
         em.unwrap(Session.class).doWork(connection -> {
             PreparedStatement stmt = connection.prepareStatement("INSERT into file_blob (info_id, data) values (?, ?)");
             stmt.setString(1, fileId);
-            stmt.setBlob(2, contents);
+            stmt.setBinaryStream(2, contents);
             stmt.execute();
         });
     }
@@ -47,7 +50,7 @@ public class RawFileBlobRepository {
             if(!resultSet.next()) {
                 throw new FileNotFoundException(fileId);
             }
-            return resultSet.getBlob(1).getBinaryStream();
+            return resultSet.getBinaryStream(1);
         });
     }
 }

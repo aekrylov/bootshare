@@ -3,7 +3,7 @@ package com.github.aekrylov.bootshare.controller;
 import com.github.aekrylov.bootshare.model.FileInfo;
 import com.github.aekrylov.bootshare.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +41,7 @@ public class DownloadController {
     public ResponseEntity<?> download(@PathVariable String id) {
         FileInfo info = storageService.getFileInfo(id);
 
-        InputStreamResource data = new InputStreamResource(storageService.getFileAsStream(id));
+        Resource data = storageService.getFileAsResource(id);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentDisposition(

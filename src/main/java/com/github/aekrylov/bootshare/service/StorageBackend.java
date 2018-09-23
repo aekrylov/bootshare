@@ -1,6 +1,8 @@
 package com.github.aekrylov.bootshare.service;
 
 import com.github.aekrylov.bootshare.model.FileInfo;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -28,6 +30,16 @@ public interface StorageBackend {
      * @throws FileNotFoundException if file not found
      */
     InputStream getAsStream(String fileId);
+
+    /**
+     * Returns file contents represented as a Spring resource. This may be more efficient when dealing with HTTP requests
+     * @param fileId file id
+     * @return corresponding resource
+     * @throws FileNotFoundException if file not found
+     */
+    default Resource getAsResource(String fileId) {
+        return new InputStreamResource(getAsStream(fileId));
+    }
 
     /**
      * Delete the file contents. Must be called after the file info is deleted

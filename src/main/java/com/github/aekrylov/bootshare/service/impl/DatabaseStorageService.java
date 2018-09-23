@@ -8,6 +8,7 @@ import com.github.aekrylov.bootshare.service.FileNotFoundException;
 import com.github.aekrylov.bootshare.service.StorageBackend;
 import com.github.aekrylov.bootshare.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -74,6 +75,11 @@ public class DatabaseStorageService implements StorageService {
     @Override
     public InputStream getFileAsStream(String id) {
         return storageBackend.getAsStream(id);
+    }
+
+    @Override
+    public Resource getFileAsResource(String id) {
+        return storageBackend.getAsResource(id);
     }
 
     @Override

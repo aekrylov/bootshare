@@ -2,6 +2,7 @@ package com.github.aekrylov.bootshare.service;
 
 import com.github.aekrylov.bootshare.model.FileInfo;
 import com.github.aekrylov.bootshare.model.User;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
@@ -46,6 +47,14 @@ public interface StorageService {
      * @throws FileNotFoundException if no file with such id exists
      */
     InputStream getFileAsStream(String id);
+
+    /**
+     * Loads file contents as a Spring resource
+     * @param id file id
+     * @return resource with file contents
+     * @throws FileNotFoundException if no file with such id exists
+     */
+    Resource getFileAsResource(String id);
 
     /**
      * Returns all files uploaded by a given user

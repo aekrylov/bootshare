@@ -7,6 +7,8 @@ import com.github.aekrylov.bootshare.service.FileNotFoundException;
 import com.github.aekrylov.bootshare.service.StorageBackend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -55,6 +57,11 @@ public class FileSystemStorageBackend implements StorageBackend {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Resource getAsResource(String fileId) {
+        return new FileSystemResource(getPath(fileId).toFile());
     }
 
     @Override

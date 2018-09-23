@@ -6,6 +6,7 @@ import com.github.aekrylov.bootshare.service.StorageBackend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -50,6 +51,15 @@ public class HybridStorageBackend implements StorageBackend {
             return fsBackend.getAsStream(fileId);
         } catch(FileNotFoundException ex) {
             return dbBackend.getAsStream(fileId);
+        }
+    }
+
+    @Override
+    public Resource getAsResource(String fileId) {
+        try {
+            return fsBackend.getAsResource(fileId);
+        } catch(FileNotFoundException ex) {
+            return dbBackend.getAsResource(fileId);
         }
     }
 

@@ -10,7 +10,7 @@ import java.util.Objects;
  * Date: 9/20/18 11:31 PM
  */
 @Entity
-@Table(name = "file_info")
+@Table(name = "files")
 public class FileInfo implements Serializable {
 
     @Id

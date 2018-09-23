@@ -32,7 +32,7 @@ public class RawFileBlobRepository {
         em.flush();
         //obtain a connection through Hibernate to get inside current transaction
         em.unwrap(Session.class).doWork(connection -> {
-            PreparedStatement stmt = connection.prepareStatement("INSERT into file_blob (info_id, data) values (?, ?)");
+            PreparedStatement stmt = connection.prepareStatement("INSERT into blobs (info_id, data) values (?, ?)");
             stmt.setString(1, fileId);
             stmt.setBinaryStream(2, contents);
             stmt.execute();
@@ -42,7 +42,7 @@ public class RawFileBlobRepository {
     public InputStream findById(String fileId) {
         //obtain a connection through Hibernate to get inside current transaction, if any
         return em.unwrap(Session.class).doReturningWork(connection -> {
-            PreparedStatement stmt = connection.prepareStatement("SELECT data from file_blob where info_id = ?");
+            PreparedStatement stmt = connection.prepareStatement("SELECT data from blobs where info_id = ?");
             stmt.setString(1, fileId);
             stmt.execute();
 

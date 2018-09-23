@@ -1,6 +1,6 @@
 package com.github.aekrylov.bootshare.repository;
 
-import com.github.aekrylov.bootshare.model.FileSystemBlob;
+import com.github.aekrylov.bootshare.model.FilePath;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
  * Date: 9/23/18 6:06 PM
  */
 @Repository
-public interface FileSystemBlobRepository extends CrudRepository<FileSystemBlob, String> {
+public interface FilePathRepository extends CrudRepository<FilePath, String> {
 }

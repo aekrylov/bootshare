@@ -1,8 +1,8 @@
 package com.github.aekrylov.bootshare.service.impl;
 
 import com.github.aekrylov.bootshare.model.FileInfo;
-import com.github.aekrylov.bootshare.model.FileSystemBlob;
-import com.github.aekrylov.bootshare.repository.FileSystemBlobRepository;
+import com.github.aekrylov.bootshare.model.FilePath;
+import com.github.aekrylov.bootshare.repository.FilePathRepository;
 import com.github.aekrylov.bootshare.service.FileNotFoundException;
 import com.github.aekrylov.bootshare.service.StorageBackend;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +27,17 @@ import java.nio.file.Paths;
 public class FileSystemStorageBackend implements StorageBackend {
 
     private final Path basePath;
-    private final FileSystemBlobRepository repository;
+    private final FilePathRepository repository;
 
     @Autowired
-    public FileSystemStorageBackend(StorageProperties storageProperties, FileSystemBlobRepository repository) {
+    public FileSystemStorageBackend(StorageProperties storageProperties, FilePathRepository repository) {
         this.basePath = storageProperties.getFs().getBasePath();
         this.repository = repository;
     }
 
     @Override
     public void insert(FileInfo fileInfo, MultipartFile file) throws IOException {
-        FileSystemBlob blob = new FileSystemBlob();
+        FilePath blob = new FilePath();
         blob.setFile(fileInfo);
         Path relativePath = generatePath(fileInfo);
         blob.setRelativePath(relativePath.toString());

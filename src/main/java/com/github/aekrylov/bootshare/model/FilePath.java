@@ -7,7 +7,8 @@ import javax.persistence.*;
  * Date: 9/23/18 6:02 PM
  */
 @Entity
-public class FileSystemBlob {
+@Table(name = "paths")
+public class FilePath {
 
     @Id
     private String fileId;

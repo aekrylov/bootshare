@@ -22,7 +22,8 @@
                 <label for="ttlInput" class="col-sm-3 col-form-label">Expires in</label>
                 <div class="col-sm-9 input-group">
                     <div class="input-group">
-                        <input type="number" name="ttl" id="ttlInput" placeholder="7" class="form-control" min="1">
+                        <input type="number" name="ttl" id="ttlInput" placeholder="7" class="form-control"
+                               min="1" required>
                         <div class="input-group-append">
                             <span class="input-group-text">days</span>
                         </div>

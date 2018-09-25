@@ -1,5 +1,6 @@
 package com.github.aekrylov.bootshare.security;
 
+import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collections;
@@ -8,7 +9,7 @@ import java.util.Collections;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 9/22/18 1:35 AM
  */
-public class OtpAuthenticationToken extends BaseOtpAuthentication {
+public class OtpAuthenticationToken extends AbstractAuthenticationToken {
 
     private final String phone;
     private final String code;

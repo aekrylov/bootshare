@@ -88,6 +88,13 @@ public class DatabaseStorageService implements StorageService {
         return fileInfoRepository.getByOwner(user);
     }
 
+    @Override
+    public int cleanUp() {
+        List<FileInfo> expired = fileInfoRepository.findAllExpired();
+        expired.forEach(fileInfo -> delete(fileInfo.getId()));
+        return expired.size();
+    }
+
     private Optional<FileInfo> findFile(String id) {
         return fileInfoRepository.findById(id)
                 .filter(file -> file.getExpiresAt().after(new Date()));

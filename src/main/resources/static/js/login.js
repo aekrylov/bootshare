@@ -7,14 +7,15 @@ $(function() {
 
     $('#loginForm').submit(function(e) {
         //validate form
-        $(this).addClass('was-validated');
+        var form = $(this);
+        form.addClass('was-validated');
         if(this.checkValidity() === false) {
             e.preventDefault();
             e.stopPropagation();
             return;
         }
 
-        var btn = $('#submitBtn', this);
+        var btn = $('#submitBtn', form);
         if(!btn.attr('data-hasnext')) {
             return;
         }
@@ -38,9 +39,12 @@ $(function() {
                 $('#nextStepForm input').removeAttr('disabled');
                 $('#code').focus();
             })
-            .fail(function() {
+            .fail(function(e) {
                 btn.removeAttr('disabled');
-                //todo more verbose
+                btn.text('Next');
+                form.prepend('<div class="alert alert-danger" role="alert">' +
+                    'An error occurred while sending the confirmation code. Please contact admin</div>');
+                console.error(e);
             });
     });
 

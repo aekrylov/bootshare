@@ -2,6 +2,7 @@ package com.github.aekrylov.bootshare.service.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.aekrylov.bootshare.service.OtpException;
 import com.github.aekrylov.bootshare.service.SmsGateway;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.ObjectMapper;
@@ -49,9 +50,12 @@ public class SmsRuGateway implements SmsGateway {
         params.put("msg", text);
 
         try {
-            request("send", params).getBody(); //todo handle responses
+            SmsRuResponse response = request("send", params).getBody();
+            if(!"OK".equals(response.getStatus())) {
+                throw new OtpException("Error sending SMS: SMS.RU returned status" + response.getStatus_code());
+            }
         } catch (UnirestException e) {
-            throw new RuntimeException(e); //todo
+            throw new OtpException(e);
         }
     }
 
@@ -83,9 +87,11 @@ public class SmsRuGateway implements SmsGateway {
                 .fields(params)
                 .field("api_id", clientId)
                 .field("json", 1);
+
         if(testMode) {
-            body.field("test", testMode);
+            body.field("test", 1);
         }
+        
         return body.asObject(SmsRuResponse.class);
     }
 

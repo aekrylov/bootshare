@@ -32,8 +32,8 @@
     </head>
 
     <body>
-        <div class="container-fluid mb-2">
-            <header class="navbar navbar-expand navbar-light bg-light">
+        <header class="navbar navbar-expand navbar-light bg-light mb-2">
+            <div class="container">
                 <a class="navbar-brand" href="/">BootShare</a>
 
                 <div class="collapse navbar-collapse">
@@ -56,8 +56,8 @@
                         </ul>
                     </#if>
                 </div>
-            </header>
-        </div>
+            </div>
+        </header>
         <div class="container">
                 <@body></@body>
         </div>

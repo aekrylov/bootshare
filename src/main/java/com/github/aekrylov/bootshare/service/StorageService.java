@@ -62,4 +62,10 @@ public interface StorageService {
      * @return list of all files uploaded by the user
      */
     List<FileInfo> getAllFiles(User user);
+
+    /**
+     * Removes expired files data
+     * @return number of files removed
+     */
+    int cleanUp();
 }

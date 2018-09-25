@@ -1,8 +1,8 @@
 <#include 'base.ftl'>
 
 <#macro body>
-    <div class="row justify-content-center">
-        <form method="post" enctype="multipart/form-data" class="form-horizontal center-block col-lg-8">
+    <div class="row">
+        <form method="post" enctype="multipart/form-data" class="form-horizontal col-lg-8">
             <h2>Upload a new file</h2>
             <div class="form-group row">
                 <label for="fileInput" class="col-sm-3 col-form-label">File</label>
@@ -20,7 +20,7 @@
                             <span class="input-group-text">days</span>
                         </div>
                     </div>
-                    <span class="form-text text-muted">The file will be unavailbale after expiration</span>
+                    <span class="form-text text-muted">The file will be unavailable after expiration</span>
                 </div>
             </div>
             <div class="form-group row">

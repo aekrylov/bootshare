@@ -83,8 +83,9 @@ public class SmsRuGateway implements SmsGateway {
                 .fields(params)
                 .field("api_id", clientId)
                 .field("json", 1);
+
         if(testMode) {
-            body.field("test", testMode);
+            body.field("test", 1);
         }
         return body.asObject(SmsRuResponse.class);
     }

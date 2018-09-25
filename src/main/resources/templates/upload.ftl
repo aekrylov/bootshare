@@ -8,7 +8,7 @@
                 <label for="fileInput" class="col-sm-3 col-form-label">File</label>
                 <div class="col-sm-9">
                     <input type="file" name="file" id="fileInput" class="form-control-file">
-                    <span class="form-text text-muted">Max file size is 10MB</span>
+                    <span class="form-text text-muted">Max file size is <strong>2GB</strong></span>
                 </div>
             </div>
             <div class="form-group row">

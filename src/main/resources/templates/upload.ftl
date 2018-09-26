@@ -13,7 +13,7 @@
             <div class="form-group row">
                 <label for="fileInput" class="col-sm-3 col-form-label">File</label>
                 <div class="col-sm-9">
-                    <input type="file" name="file" id="fileInput" class="form-control-file">
+                    <input type="file" name="file" id="fileInput" required>
                     <span class="form-text text-muted" id="fileInputErrors">More help text</span>
                     <span class="form-text text-muted">Max file size is <strong>2GB</strong></span>
                 </div>
